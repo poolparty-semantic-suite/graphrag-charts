@@ -1,0 +1,23 @@
+chatbot:
+  image:
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    annotations:
+      # 30 minutes
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+
+conversation:
+  image:
+    tag: latest
+    pullPolicy: Always
+
+components:
+  image:
+    tag: latest
+    pullPolicy: Always
+
+n8n:
+  configuration:
+    environment:
+      N8N_SECURE_COOKIE: false
