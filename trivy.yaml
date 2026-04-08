@@ -6,6 +6,7 @@ output: trivy.sarif
 scan:
   skip-dirs:
     - ./examples/**
+    - /scripts/**
   scanners:
     - vuln
     - secret

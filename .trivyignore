@@ -1,0 +1,11 @@
+# Rule: ConfigMap with sensitive content
+# Reason: We don't store sensitive information in ConfigMaps, trivy has wrong assumptions
+AVD-KSV-01010
+
+# Rule: Restrict container images to trusted registries
+# Reason: We use a private registry
+KSV0125
+
+# Rule: CPU not limited
+# Reason: We leave this to be chosen by the user
+KSV011
