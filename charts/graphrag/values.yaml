@@ -60,8 +60,8 @@ conversation:
   configuration:
     properties:
       cors.disable: true
-      n8n.base.url: http://graphrag-n8n:5678
-      n8n.chat.webhook.url: http://graphrag-n8n:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
+      n8n.base.url: http://graphrag-workflows:5678
+      n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
       spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://graphrag-keycloak-service.keycloak:8080/realms/graphrag/protocol/openid-connect/certs
       spring.security.oauth2.resourceserver.jwt.issuer-uri: https://auth.127.0.0.1.nip.io/realms/graphrag
       keycloak.health.url: http://graphrag-keycloak-service.keycloak:9000/health
