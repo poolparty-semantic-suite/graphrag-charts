@@ -1,0 +1,27 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: graphrag-keycloak
+spec:
+  instances: 2
+  # image: quay.io/phasetwo/phasetwo-keycloak:26.4.2
+  db:
+    vendor: postgres
+    host: keycloak-postgres-rw
+    database: keycloak
+    usernameSecret:
+      name: keycloak-postgres-user
+      key: username
+    passwordSecret:
+      name: keycloak-postgres-user
+      key: password
+  ingress:
+    enabled: true
+    className: nginx
+  http:
+    httpEnabled: true
+  hostname:
+    hostname: auth.127.0.0.1.nip.io
+    strict: true
+  proxy:
+    headers: xforwarded

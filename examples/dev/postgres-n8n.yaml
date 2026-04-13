@@ -1,0 +1,20 @@
+#
+# Sample PostgreSQL cluster for the GraphRAG N8N service.
+# See https://cloudnative-pg.io/documentation/current/cloudnative-pg.v1/
+#
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: graphrag-postgres-n8n
+spec:
+  instances: 3
+  storage:
+    size: 1Gi
+  superuserSecret:
+    name: postgres-superuser
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
+      secret:
+        name: n8n-postgres-user
