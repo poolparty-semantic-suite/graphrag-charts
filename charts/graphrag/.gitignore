@@ -1,9 +1,0 @@
-# Pulled dependencies
-charts/*.tgz
-
-# Packaged charts
-*.tgz
-
-# Overrides for local development and testing
-values.dev.yaml
-output.yaml

@@ -9,7 +9,7 @@
 .settings
 
 # Helm
-charts/*.tgz
+charts/
 values_overrides.yaml
 template_output.yaml
 output.yaml
@@ -20,6 +20,3 @@ output.yaml
 *.key
 *.gpg
 *.pgp
-
-#
-*.sarif

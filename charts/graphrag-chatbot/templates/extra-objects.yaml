@@ -1,5 +1,0 @@
-{{ range .Values.extraObjects }}
----
-{{- $value := typeIs "string" . | ternary . (. | toYaml) }}
-{{ tpl $value $ }}
-{{ end }}
