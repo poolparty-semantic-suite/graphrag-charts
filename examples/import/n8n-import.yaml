@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: n8n-import
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      volumes:
+        - name: n8n-entities
+          secret:
+            secretName: n8n-entities
+        - name: n8n-home
+          emptyDir: {}
+      containers:
+        - name: n8n-import
+          image: n8nio/n8n:1.122.4
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_POSTGRESDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-n8n-database-credentials
+                  key: DB_POSTGRESDB_USER
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-n8n-database-credentials
+                  key: DB_POSTGRESDB_PASSWORD
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-n8n-encryption
+                  key: N8N_ENCRYPTION_KEY
+          envFrom:
+            - configMapRef:
+                name: graphrag-n8n
+          volumeMounts:
+            - name: n8n-entities
+              mountPath: /tmp/entities/
+            - name: n8n-home
+              mountPath: /var/lib/graphrag/n8n
+          workingDir: /tmp
+          command: ["sh", "-c"]
+          args:
+            - |
+              n8n import:entities --separate --input=/tmp/entities
