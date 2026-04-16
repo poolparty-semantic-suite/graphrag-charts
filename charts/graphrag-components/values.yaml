@@ -153,7 +153,7 @@ configuration:
   # Default Java arguments with which GraphRAG Components instances will be launched.
   # The value is processed as a Helm template.
   # Ref: https://gitlab.ontotext.com/graphwise-graphrag/graphrag-components
-  defaultJavaArguments: -XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -XX:-UseCompressedOops
+  defaultJavaArguments: -XX:MaxRAMPercentage=85
 
   # Java arguments to append after .Values.configuration.defaultJavaArguments
   # Use this one to avoid overriding the default values.

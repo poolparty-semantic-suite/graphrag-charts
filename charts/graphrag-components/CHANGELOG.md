@@ -1,5 +1,12 @@
 # GraphRAG Components Changelog
 
+## Version 1.1.1
+
+### Fixed
+
+- Removed default Java arguments from defaultJavaArguments that might disrupt the service operation
+- Updated the `sources` in `Chart.yaml` to point to the correct repository
+
 ## Version 1.1.0
 
 ### New

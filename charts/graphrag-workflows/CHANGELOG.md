@@ -1,5 +1,11 @@
 # GraphRAG Workflows Changelog
 
+## Version 1.1.1
+
+### Fixed
+
+- Updated the `sources` in `Chart.yaml` to point to the correct repository
+
 ## Version 1.1.0
 
 ### New

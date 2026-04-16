@@ -98,6 +98,8 @@ Note that these examples are only for local testing and experimentation, **not**
       --from-literal=N8N_LICENSE_ACTIVATION_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     ```
 
+You can use the [values.example.yaml](values.example.yaml) in addition to use the referenced secrets.
+
 ### Configuration
 
 The GraphRAG Helm charts are designed to be customized and reconfigured in a myriad of ways:
@@ -123,7 +125,7 @@ you need to override this.
 Once you have prepared all required configurations and secrets, simply execute the following command:
 
 ```shell
-helm --namespace graphrag upgrade --install --dependency-update -f values.yaml graphrag .
+helm --namespace graphrag upgrade --install --dependency-update -f values.example.yaml graphrag .
 ```
 
 ## Post-Install

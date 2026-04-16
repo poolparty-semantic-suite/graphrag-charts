@@ -45,10 +45,11 @@ The Helm deployment for GraphRAG consists of the following Helm charts:
 
 - [charts/graphrag/](charts/graphrag) - This is an umbrella chart that deploys the whole GraphRAG suite
 - [charts/graphrag-chatbot/](charts/graphrag-chatbot) - Helm chart for deploying the Chatbot web application
-- [charts/graphrag-conversation/](charts/graphrag-conversation) - Helm chart for deploying the Conversation service with
-  DuckDB
 - [charts/graphrag-components/](charts/graphrag-components) - Helm chart for deploying the Components service for
   vectors searches
+- [charts/graphrag-conversation/](charts/graphrag-conversation) - Helm chart for deploying the Conversation service with
+  DuckDB
+- [charts/graphrag-workflows/](charts/graphrag-workflows) - Helm chart for deploying a workflow engine
 
 ## Local Deployment
 

@@ -1,5 +1,13 @@
 # GraphRAG Changelog
 
+## Version 1.1.1
+
+### Fixed
+
+- Extracted secret references from `values.yaml` to `values.example.yaml` to avoid configuration issues
+- Updated the `sources` in `Chart.yaml` to point to the correct repository
+- Updated dependencies to their latest versions
+
 ## Version 1.1.0
 
 ### New

@@ -1,5 +1,12 @@
 # GraphRAG Chatbot Changelog
 
+## Version 1.1.1
+
+### Fixed
+
+- Added missing reference to the NGINX default.conf variable when rendering the `subPath` in the pod
+- Updated the `sources` in `Chart.yaml` to point to the correct repository
+
 ## Version 1.1.0
 
 ### New
