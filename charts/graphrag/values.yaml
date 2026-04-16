@@ -69,11 +69,12 @@ conversation:
       springdoc.swagger-ui.config-url: /graphrag/conversations/v3/api-docs/swagger-config
       springdoc.swagger-ui.url: /graphrag/conversations/v3/api-docs
 
-    existingProperties:
-      - secretRef:
-          name: graphrag-conversation-database-credentials
-      - secretRef:
-          name: graphrag-conversation-keycloak-client
+    existingProperties: []
+    # Example usage:
+    #  - secretRef:
+    #      name: graphrag-conversation-database-credentials
+    #  - secretRef:
+    #      name: graphrag-conversation-keycloak-client
 
 ######################################################
 # Configurations for the GraphRAG Components service #
@@ -92,11 +93,12 @@ components:
       EMBEDDING_MODEL_ID: "cohere.embed-english-v3"
       INCLUDE_VECTOR_DATA: false
 
-    existingProperties:
-      - configMapRef:
-          name: graphrag-components-vector-database
-      - secretRef:
-          name: graphrag-components-aws-credentials
+    existingProperties: []
+    # Example usage:
+    #  - configMapRef:
+    #      name: graphrag-components-vector-database
+    #  - secretRef:
+    #      name: graphrag-components-aws-credentials
 
 ##########################################################
 # Configurations for the GraphRAG Workflows orchestrator #
