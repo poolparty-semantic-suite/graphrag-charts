@@ -1,5 +1,13 @@
 # GraphRAG Workflows Changelog
 
+## Version 1.2.0
+
+### New
+
+- Updated to version v1.2.0 of the GraphRAG Workflows engine
+- Added default values for `N8N_WORKFLOW_OVERWRITE_DATATABLE_ID`, `N8N_WORKFLOW_OVERWRITE_PARALLEL_DATATABLE_ID` and
+  `N8N_WORKFLOW_OVERWRITE_SIMPLECACHE_DATATABLE_ID` environment variables
+
 ## Version 1.1.1
 
 ### Fixed

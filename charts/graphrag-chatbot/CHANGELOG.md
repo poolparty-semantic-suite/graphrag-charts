@@ -1,5 +1,11 @@
 # GraphRAG Chatbot Changelog
 
+## Version 1.2.0
+
+### New
+
+- Updated to version v1.2.0 of the GraphRAG Chatbot application
+
 ## Version 1.1.1
 
 ### Fixed

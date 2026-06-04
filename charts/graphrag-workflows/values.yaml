@@ -142,6 +142,9 @@ configuration:
     N8N_GRACEFUL_SHUTDOWN_TIMEOUT: "30"
     N8N_LOG_LEVEL: "info"
     DB_TYPE: "postgresdb"
+    N8N_WORKFLOW_OVERWRITE_DATATABLE_ID: "Utils - Calculate LLM usage, Error - Sync"
+    N8N_WORKFLOW_OVERWRITE_PARALLEL_DATATABLE_ID: "Main, Step - Intent Classification - Async, Step - Graph Modeling Concept Enricher - Async, Step - Graph Modeling Expansion - Async, Step - Followups generation - Async, Step - Vector Search - Async, Step - GraphDB MCP - Async, Error - Async, Error - workflow, Parallel - Steps Batching, Step - Output guardrails - Async, Step - Followups generation - Async,Parallel Post Final Answer - Main,Parallel - Main,Parallel Post Final Answer - Main,Check for timeouts,Parallel - Steps Messaging,Vector search tool"
+    N8N_WORKFLOW_OVERWRITE_SIMPLECACHE_DATATABLE_ID: "Fetch Concept Details"
 
   # Encryption key for n8n credentials.
   # By default, if not set, n8n will generate a random key on startup and will use it to encrypt all credentials.
