@@ -2,6 +2,50 @@ apiVersion: v1
 entries:
   graphrag:
   - apiVersion: v2
+    created: "2026-07-28T12:09:21.412694841Z"
+    dependencies:
+    - alias: chatbot
+      condition: chatbot.enabled
+      name: graphrag-chatbot
+      repository: file://../graphrag-chatbot/
+      version: 1.2.2
+    - alias: conversation
+      condition: conversation.enabled
+      name: graphrag-conversation
+      repository: file://../graphrag-conversation
+      version: 1.2.1
+    - alias: components
+      condition: components.enabled
+      name: graphrag-components
+      repository: file://../graphrag-components
+      version: 1.2.1
+    - alias: workflows
+      condition: workflows.enabled
+      name: graphrag-workflows
+      repository: file://../graphrag-workflows
+      version: 1.2.1
+    description: GraphRAG bundle
+    digest: 8907957d703567c40f890e8067b2ea25053a47c6ba43af71ac67713546597341
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-1.2.2/graphrag-1.2.2.tgz
+    version: 1.2.2
+  - apiVersion: v2
     created: "2026-07-28T11:10:11.381746114Z"
     dependencies:
     - alias: chatbot
@@ -178,6 +222,30 @@ entries:
     - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-1.1.0/graphrag-1.1.0.tgz
     version: 1.1.0
   graphrag-chatbot:
+  - apiVersion: v2
+    appVersion: 1.2.0
+    created: "2026-07-28T12:09:21.561131707Z"
+    description: GraphRAG Chatbot user interface service
+    digest: a39708d828f614f07386990e66ef504d7221f1aadd0942b0def5c9c4418b6dfd
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag-chatbot
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-chatbot-1.2.2/graphrag-chatbot-1.2.2.tgz
+    version: 1.2.2
   - apiVersion: v2
     appVersion: 1.2.0
     created: "2026-07-28T11:10:11.575657695Z"
@@ -565,4 +633,4 @@ entries:
     urls:
     - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-workflows-1.1.0/graphrag-workflows-1.1.0.tgz
     version: 1.1.0
-generated: "2026-07-28T11:10:12.059386959Z"
+generated: "2026-07-28T12:09:21.56122413Z"
