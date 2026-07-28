@@ -1,5 +1,11 @@
 # GraphRAG Chatbot Changelog
 
+## Version 1.2.2
+
+### Fixed
+
+- Added missing template handling in the `graphrag-chatbot.conversation.proxy-context-path` template function
+
 ## Version 1.2.1
 
 ### New
