@@ -123,7 +123,6 @@ autoscaling:
 # n8n runtime configuration settings.
 # For reference, see https://docs.n8n.io/hosting/configuration/environment-variables
 configuration:
-
   # The external URL at which GraphRAG N8N workflow engine would be accessible.
   # This can be a publicly available domain name, an internal one or even a Kubernetes service address.
   #
@@ -138,6 +137,7 @@ configuration:
   externalUrl: http://n8n.127.0.0.1.nip.io/
 
   # n8n configurations injected as environment variables via templates/configmap.yaml
+  # The values are processed as Helm templates.
   environment:
     N8N_GRACEFUL_SHUTDOWN_TIMEOUT: "30"
     N8N_LOG_LEVEL: "info"
@@ -167,6 +167,8 @@ configuration:
     secretKey: N8N_LICENSE_ACTIVATION_KEY
     # Dedicated tenant identifier for organizations using n8n Enterprise.
     tenantId: 1
+    # Defines the license secret as optional or not.
+    optional: false
 
   # Configurations for connecting n8n to a PostgreSQL database.
   # Ref: https://docs.n8n.io/hosting/configuration/environment-variables/database/#postgresql

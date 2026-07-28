@@ -1,5 +1,12 @@
 # GraphRAG Workflows Changelog
 
+## Version 1.2.1
+
+### New
+
+- Values in `configuration.environment` are now treated as Helm templates
+- Added `configuration.license.optional` to instruct Kubernetes if it should expect the license secret or not
+
 ## Version 1.2.0
 
 ### New

@@ -1,5 +1,11 @@
 # GraphRAG Components Changelog
 
+## Version 1.2.1
+
+### New
+
+- Values in `configuration.properties` are now treated as Helm templates
+
 ## Version 1.2.0
 
 ### New
