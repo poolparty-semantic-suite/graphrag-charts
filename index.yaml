@@ -2,6 +2,50 @@ apiVersion: v1
 entries:
   graphrag:
   - apiVersion: v2
+    created: "2026-07-28T11:10:11.381746114Z"
+    dependencies:
+    - alias: chatbot
+      condition: chatbot.enabled
+      name: graphrag-chatbot
+      repository: file://../graphrag-chatbot/
+      version: 1.2.1
+    - alias: conversation
+      condition: conversation.enabled
+      name: graphrag-conversation
+      repository: file://../graphrag-conversation
+      version: 1.2.1
+    - alias: components
+      condition: components.enabled
+      name: graphrag-components
+      repository: file://../graphrag-components
+      version: 1.2.1
+    - alias: workflows
+      condition: workflows.enabled
+      name: graphrag-workflows
+      repository: file://../graphrag-workflows
+      version: 1.2.1
+    description: GraphRAG bundle
+    digest: 5f611a1f411cc3f0b5414925f39c8a0be032a93136d79193fb56fc7013e07362
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-1.2.1/graphrag-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
     created: "2026-06-09T12:34:11.814036175Z"
     dependencies:
     - alias: chatbot
@@ -136,6 +180,30 @@ entries:
   graphrag-chatbot:
   - apiVersion: v2
     appVersion: 1.2.0
+    created: "2026-07-28T11:10:11.575657695Z"
+    description: GraphRAG Chatbot user interface service
+    digest: 26f825b6fbe6c8505dd1b715ad89cea4d8c31075a5fe50f81517192878cae0f1
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag-chatbot
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-chatbot-1.2.1/graphrag-chatbot-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: 1.2.0
     created: "2026-06-09T12:34:12.049860013Z"
     description: GraphRAG Chatbot user interface service
     digest: d4ddbcb2cfacefd2c030e02362cc35322e51134018cc01675f03b83f3614191d
@@ -207,6 +275,30 @@ entries:
     - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-chatbot-1.1.0/graphrag-chatbot-1.1.0.tgz
     version: 1.1.0
   graphrag-components:
+  - apiVersion: v2
+    appVersion: 1.2.0
+    created: "2026-07-28T11:10:11.756205883Z"
+    description: Graphwise's GraphRAG Components
+    digest: 14552b9ef1f1b790ae2a957d58c6fa477f37dc85f426ce3f9d45bd8389710b14
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag-components
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-components-1.2.1/graphrag-components-1.2.1.tgz
+    version: 1.2.1
   - apiVersion: v2
     appVersion: 1.2.0
     created: "2026-06-09T12:34:12.267160839Z"
@@ -282,6 +374,30 @@ entries:
   graphrag-conversation:
   - apiVersion: v2
     appVersion: 1.2.0
+    created: "2026-07-28T11:10:11.90149275Z"
+    description: GraphRAG Conversation service
+    digest: 6696dd0f365a45e142376b9b28e11ed3c2e09eb04832d48240b606811f91a491
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag-conversation
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-conversation-1.2.1/graphrag-conversation-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: 1.2.0
     created: "2026-06-09T12:34:12.497843505Z"
     description: GraphRAG Conversation service
     digest: 79fb27488e9cf6dfb8581c35c3827e3ae568ccb2066a7c1b562b7579e87115d0
@@ -355,6 +471,30 @@ entries:
   graphrag-workflows:
   - apiVersion: v2
     appVersion: 1.2.0
+    created: "2026-07-28T11:10:12.059330514Z"
+    description: Graphwise's GraphRAG Workflows
+    digest: a3e51163f6c7b3e0e98ce58500888af86e1d356c1e5babf67704acd033e845b1
+    home: https://graphwise.ai/
+    keywords:
+    - graphwise
+    - graphrag
+    - semantic
+    - database
+    - knowledge
+    kubeVersion: ^1.32.0-0
+    maintainers:
+    - email: support@graphwise.ai
+      name: poolparty-semantic-suite
+      url: https://graphwise.ai
+    name: graphrag-workflows
+    sources:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts
+    type: application
+    urls:
+    - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-workflows-1.2.1/graphrag-workflows-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: 1.2.0
     created: "2026-06-09T12:34:12.773801199Z"
     description: Graphwise's GraphRAG Workflows
     digest: 0231d92e0cc913a25e902dcf6468ecae5cee7b0a1c8664a2103b45a40ad2a69c
@@ -425,4 +565,4 @@ entries:
     urls:
     - https://github.com/poolparty-semantic-suite/graphrag-charts/releases/download/graphrag-workflows-1.1.0/graphrag-workflows-1.1.0.tgz
     version: 1.1.0
-generated: "2026-06-09T12:34:12.773822288Z"
+generated: "2026-07-28T11:10:12.059386959Z"
