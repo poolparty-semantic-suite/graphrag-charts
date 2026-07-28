@@ -1,5 +1,11 @@
 # GraphRAG Changelog
 
+## Version 1.2.2
+
+### Updated
+
+- Updated the chatbot subchart to version 1.2.2. Check its respective `CHANGELOG.md` files for more details.
+
 ## Version 1.2.1
 
 ### Updated

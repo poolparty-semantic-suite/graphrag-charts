@@ -50,6 +50,6 @@ Renders the URL for the Conversation service.
 {{- end -}}
 
 {{- define "graphrag-chatbot.conversation.proxy-context-path" -}}
-  {{- $backendUrl := urlParse (.Values.configuration.properties.GRAPHRAG_BACKEND_URL) -}}
+  {{- $backendUrl := urlParse (tpl .Values.configuration.properties.GRAPHRAG_BACKEND_URL .) -}}
   {{- printf "%s" (coalesce $backendUrl.path "/") -}}
 {{- end -}}
