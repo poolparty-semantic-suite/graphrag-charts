@@ -1,15 +1,15 @@
 dependencies:
 - name: graphrag-chatbot
   repository: file://../graphrag-chatbot/
-  version: 1.2.0
+  version: 1.2.1
 - name: graphrag-conversation
   repository: file://../graphrag-conversation
-  version: 1.2.0
+  version: 1.2.1
 - name: graphrag-components
   repository: file://../graphrag-components
-  version: 1.2.0
+  version: 1.2.1
 - name: graphrag-workflows
   repository: file://../graphrag-workflows
-  version: 1.2.0
-digest: sha256:7a5f72abb6975d233b313dfa2050f589bb6114afab9ebab9a94b324137ad4b63
-generated: "2026-06-04T10:07:53.60327668+03:00"
+  version: 1.2.1
+digest: sha256:2a339df412d6f80b8a1c6b2f72709b705f382c234cb7556ba194782ff9bacc62
+generated: "2026-07-28T10:50:04.117837916+03:00"

@@ -1,5 +1,15 @@
 # GraphRAG Chatbot Changelog
 
+## Version 1.2.1
+
+### New
+
+- Values in `configuration.properties` are now treated as Helm templates
+
+### Updated
+
+- Tuned the default resource requests and limits to be more appropriate for an NGINX pod
+
 ## Version 1.2.0
 
 ### New

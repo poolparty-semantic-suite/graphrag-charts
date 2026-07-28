@@ -65,7 +65,7 @@ data:
   {{- if .Values.configuration.environment -}}
     {{- range $key, $value := .Values.configuration.environment -}}
       {{- if ne $value nil -}}
-        {{- printf "%s: %s" $key ($value | quote) | nindent 2 -}}
+        {{- printf "%s: %s" $key (tpl ($value | toString) $ | quote) | nindent 2 -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}

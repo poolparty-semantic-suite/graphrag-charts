@@ -155,6 +155,7 @@ spec:
                 secretKeyRef:
                   name: {{ tpl .Values.configuration.license.existingSecret $ }}
                   key: {{ .Values.configuration.license.secretKey }}
+                  optional: {{ .Values.configuration.license.optional }}
             {{- end }}
             {{- if .Values.configuration.postgresdb.credentials.existingSecret }}
             - name: DB_POSTGRESDB_USER
