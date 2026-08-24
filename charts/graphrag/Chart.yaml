@@ -42,3 +42,9 @@ dependencies:
     repository: file://../graphrag-workflows
     alias: workflows
     condition: workflows.enabled
+  # GraphRAG Evaluation
+  - name: graphrag-evaluation
+    version: 1.0.0
+    repository: file://../graphrag-evaluation
+    alias: evaluation
+    condition: evaluation.enabled

@@ -1,5 +1,11 @@
 # GraphRAG Changelog
 
+## Version 1.3.0
+
+### New
+
+- Added GraphRAG Evaluation service in the umbrella chart
+
 ## Version 1.2.2
 
 ### Updated
