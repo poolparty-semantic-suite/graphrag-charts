@@ -11,5 +11,8 @@ dependencies:
 - name: graphrag-workflows
   repository: file://../graphrag-workflows
   version: 1.2.1
-digest: sha256:75b950b983a96674d6f01d6085303253ccaf768994b46b51ba2538c528b484f1
-generated: "2026-07-28T15:02:14.679476303+03:00"
+- name: graphrag-evaluation
+  repository: file://../graphrag-evaluation
+  version: 1.0.0
+digest: sha256:26b81b3f41e41a5bc093e29cec3776bac1090b48d257293099edcd51ec011b32
+generated: "2026-08-24T10:40:27.578592336+03:00"

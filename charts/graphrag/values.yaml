@@ -132,3 +132,20 @@ workflows:
       database: n8n
       credentials:
         existingSecret: graphrag-n8n-database-credentials
+
+######################################################
+# Configurations for the GraphRAG Evaluation service #
+######################################################
+
+evaluation:
+  enabled: true
+
+  replicas: 1
+
+  fullnameOverride: graphrag-evaluation
+
+  configuration:
+    externalUrl: https://127.0.0.1.nip.io/graphrag/evaluation/
+
+  ingress:
+    enabled: true
