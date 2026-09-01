@@ -1,5 +1,11 @@
 # GraphRAG Workflows Changelog
 
+## Version 1.3.0
+
+### New
+
+- Updated to version v1.3.0 of the GraphRAG Workflows engine
+
 ## Version 1.2.1
 
 ### New

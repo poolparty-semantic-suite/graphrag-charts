@@ -1,5 +1,11 @@
 # GraphRAG Changelog
 
+## Version 1.3.0
+
+### Updated
+
+- Updated the subcharts to version 1.3.0 of GraphRAG. Check their respective `CHANGELOG.md` files for more details.
+
 ## Version 1.2.2
 
 ### Updated
