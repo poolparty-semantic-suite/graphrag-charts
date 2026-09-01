@@ -1,5 +1,11 @@
 # GraphRAG Conversation Changelog
 
+## Version 1.3.0
+
+### New
+
+- Updated to version v1.3.0 of the GraphRAG Conversation service
+
 ## Version 1.2.1
 
 ### New
