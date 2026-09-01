@@ -121,7 +121,6 @@ autoscaling:
 ###################################
 
 # GraphRAG Chatbot runtime configuration settings.
-# For reference, see https://gitlab.ontotext.com/graphwise-graphrag/graphrag-ui
 configuration:
 
   # The external URL at which GraphRAG Chatbot would be accessible.
@@ -154,7 +153,7 @@ configuration:
     url: http://conversation:8080/
 
   # Main configurations for the GraphRAG Chatbot web application.
-  # These are environment variables that are passed to the GraphRAG Chatbot Nginx which then uses them to configure different URLs.
+  # These are environment variables that are passed to the GraphRAG Chatbot NGINX which then uses them to configure different URLs.
   # The values are processed as Helm templates.
   properties:
     GRAPHRAG_BACKEND_URL: "http://graphrag.127.0.0.1.nip.io/api"
@@ -284,7 +283,7 @@ chatbotConfigVolume:
     # Default emptyDir limit, override to your needs.
     sizeLimit: 1Gi
 
-# Configurations for an emptyDir volume for the Nginx cache folder in each GraphRAG Chatbot container.
+# Configurations for an emptyDir volume for the NGINX cache folder in each GraphRAG Chatbot container.
 # Because the default security context in .Values.securityContext configures the root filesystem to be in read-only mode, certain features
 # cannot create and write files in /var/cache/nginx. If you don't use a read-only root filesystem, you can disable this with .Values.nginxCacheTempVolume.enabled
 nginxCacheTempVolume:
@@ -364,7 +363,7 @@ args: []
 # Ports used by the GraphRAG Chatbot container
 # Note: If you want to add additional ports, use .Values.extraContainerPorts.
 containerPorts:
-  # Port mapped to GraphRAG Chatbot Nginx listener.
+  # Port mapped to GraphRAG Chatbot NGINX listener.
   http: 8080
 
 # Additional labels to append to the Pod definition.

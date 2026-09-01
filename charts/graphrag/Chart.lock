@@ -1,15 +1,15 @@
 dependencies:
 - name: graphrag-chatbot
   repository: file://../graphrag-chatbot/
-  version: 1.3.0
+  version: 1.3.1
 - name: graphrag-conversation
   repository: file://../graphrag-conversation
-  version: 1.3.0
+  version: 1.4.0
 - name: graphrag-components
   repository: file://../graphrag-components
-  version: 1.3.0
-- name: graphrag-workflows
-  repository: file://../graphrag-workflows
-  version: 1.3.0
-digest: sha256:4f88628efa757b2fa1e7b0619effbc4e4be82d4f98211c1402cce5e13a0a410c
-generated: "2026-09-01T08:37:11.994889328+03:00"
+  version: 1.3.1
+- name: graphwise-workflows
+  repository: https://poolparty-semantic-suite.github.io/graphwise-workflows-chart
+  version: 0.2.0
+digest: sha256:755cc44c1968314212a2044813515c99d622c4f56a237e67df058e0c226f122a
+generated: "2026-09-01T16:27:13.458159068+03:00"

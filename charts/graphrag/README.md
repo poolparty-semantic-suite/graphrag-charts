@@ -1,18 +1,22 @@
 # GraphRAG Helm Chart
 
 Welcome to the official Helm chart for GraphRAG by Graphwise! This Helm chart makes it easy to deploy and manage the
-GraphRAG system on our Kubernetes cluster.
+GraphRAG system on your Kubernetes cluster.
 
-### Prerequisites
+Make sure to check the official [GraphRAG documentation](https://help.graphwise.ai/en/graphrag.html) for further
+information and workflow configurations.
 
-* Kubernetes v1.32+
+## Prerequisites
+
+* Kubernetes v1.34+
 * Helm v3.8+
 
-For development and testing, you can use [kind](https://kind.sigs.k8s.io/) to create a local Kubernetes cluster.
+For development and testing, you can use [kind](https://kind.sigs.k8s.io/) to create a local Kubernetes cluster. See
+the [examples/kind](examples/kind) directory for more details.
 
-## Install
+## Configuration
 
-Create a dedicated namespace where GraphRAG will be installed.
+Create a dedicated namespace where GraphRAG will be installed:
 
 ```shell
 kubectl create namespace graphrag
@@ -20,87 +24,176 @@ kubectl create namespace graphrag
 
 ### Dependencies
 
-GraphRAG depends on the following services:
+GraphRAG directly depends on the following services:
 
 * Keycloak - Authentication and authorization in the Chatbot web application
-* PostgreSQL - Database for n8n workflows
+* PostgreSQL - Database for the Workflows
 
 In case you are testing GraphRAG locally, you can follow the [development examples](examples/dev) for deploying a sample
-Keycloak and PostgreSQL instances using their official Kubernetes operators.
-Note that these examples are only for local testing and experimentation, **not** for production.
+Keycloak and PostgreSQL instances using their official Kubernetes operators. Note that these examples are only for local
+testing and experimentation, **not** for production.
 
 ### Secrets
 
-1. Registry credentials for pulling container images
+Refer to the [values.yaml](values.yaml) file for the full set of expected secrets and their exact names. You can also
+use or refer to the helper script [dev.sh](examples/dev/dev.sh) on how to create some of the secrets.
 
-    ```shell
-    kubectl -n graphrag create secret docker-registry graphwise \
-            --docker-server=maven.ontotext.com \
-            --docker-username=<username> \
-            --docker-password=<password>
-    ```
+#### Container Images
 
-2. Secret for the Conversation service database credentials
+The container images for GraphRAG are not public. You need to be provided with credentials for accessing the
+container registry at https://maven.ontotext.com. You can contact our [sales](mailto:sales@graphwise.ai) team for more
+information or submit an enquiry at https://graphwise.ai/contact/.
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-conversation-database-credentials \
-      --from-literal=spring.datasource.username='graphrag_conversation' \
-      --from-literal=spring.datasource.password='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+Once you have the credentials, you can create a Kubernetes secret for the container registry:
 
-3. Secret for the Conversation service Keycloak client
+```shell
+kubectl -n graphrag create secret docker-registry graphwise-private \
+        --docker-server=maven.ontotext.com \
+        --docker-username=<username> \
+        --docker-password=<password>
+```
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-conversation-keycloak-client \
-      --from-literal=spring.security.oauth2.client.registration.keycloak.client-id='conversation-api-client' \
-      --from-literal=spring.security.oauth2.client.registration.keycloak.client-secret='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-      --from-literal=spring.security.oauth2.client.registration.keycloak.scope='openid'
-    ```
+You can then use it with the global `imagePullSecrets` field in [values.yaml](values.yaml):
 
-4. ConfigMap for the Components service vector database connection details
+```yaml
+global:
+  imagePullSecrets:
+    - name: graphwise-private
+```
 
-    ```shell
-    kubectl -n graphrag create configmap graphrag-components-vector-database \
-      --from-literal=VECTOR_STORE='opensearch' \
-      --from-literal=OPENSEARCH_ENDPOINT='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-      --from-literal=VECTOR_INDEX='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-      --from-literal=VECTOR_FIELD_NAME='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+#### License
 
-5. Secret for the Components service AWS credentials
+GraphRAG Workflows relies on a https://n8n.io/ commercial license for certain features. If you have one, you can create
+a Secret:
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-components-aws-credentials \
-      --from-literal=AWS_REGION='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-      --from-literal=AWS_ACCESS_KEY_ID='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
-      --from-literal=AWS_SECRET_ACCESS_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+```shell
+kubectl -n graphrag create secret generic graphrag-workflows-license \
+        --from-literal=LICENSE_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
 
-6. Secret for the Workflows n8n database connection credentials
+And use it by configuring the `workflows.license` section in [values.yaml](values.yaml):
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-n8n-database-credentials \
-      --from-literal=DB_POSTGRESDB_USER='n8n' \
-      --from-literal=DB_POSTGRESDB_PASSWORD='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+```yaml
+workflows:
+  license:
+    existingSecret: graphwise-workflows-license
+    licenseKey: LICENSE_KEY
+    tenantId: 1234567890 # Your unique tenant ID
+```
 
-7. Secret for the Workflows n8n encryption key
+#### GraphRAG Conversation Database Credentials
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-n8n-encryption \
-      --from-literal=N8N_ENCRYPTION_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+Other than the cconatiner pull secret and the Workflows license secret, the Helm chart expects you to provide a few
+additional but required Secret objects for the different GraphRAG services.
 
-8. Secret for the Workflows n8n license key
+`graphrag-conversation-database-credentials` should contain credentials for creating and connecting to a DuckDB
+instance inside the GraphRAG Conversation service. By default, the chart expects the following keys in this Secret:
 
-    ```shell
-    kubectl -n graphrag create secret generic graphrag-n8n-license \
-      --from-literal=N8N_LICENSE_ACTIVATION_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ```
+* `username` - Username for the DuckDB database
+* `password` - Password for the DuckDB database
 
-You can use the [values.example.yaml](values.example.yaml) in addition to use the referenced secrets.
+You can create this Secret by running the following command:
 
-### Configuration
+```shell
+kubectl -n graphrag create secret generic graphrag-conversation-database-credentials \
+        --from-literal=username="graphrag" \
+        --from-literal=password="<secret-password-for-duck-db>"
+```
+
+If you are using a different name or keys for this Secret, you can update the following section
+in [values.yaml](values.yaml):
+
+```yaml
+conversation:
+  configuration:
+    duckdb:
+      credentials:
+        existingSecret: <your-secret-name>
+```
+
+#### GraphRAG Conversation Keycloak Secrets
+
+`graphrag-conversation-keycloak-secrets` should contain a client credentials secret for the GraphRAG Conversation
+service used to authenticate with Keycloak. By default, the chart expects the following key in this Secret:
+
+* `client-secret` - Keycloak confidential client secret value
+
+You can create this Secret by running the following command:
+
+```shell
+kubectl -n graphrag create secret generic graphrag-conversation-keycloak-secrets \
+        --from-literal=client-secret='<client-secret-for-keycloak>'
+```
+
+If you are using a different name or keys for this Secret, you can update the `conversation.configuration.keycloak`
+section in [values.yaml](values.yaml).
+
+#### GraphRAG Workflows Encryption
+
+`graphrag-workflows-encryption` should contain the key that encrypts sensitive data in the GraphRAG Workflows service.
+By default, the chart expects the following key in this Secret:
+
+- `N8N_ENCRYPTION_KEY`
+
+You can create this Secret by running the following command:
+
+```shell
+kubectl -n graphrag create secret generic graphrag-workflows-encryption \
+        --from-literal=N8N_ENCRYPTION_KEY="<the-encryption-key>"
+```
+
+If you are using a different name or keys for this Secret, you can update the `workflows.configuration.encryption`
+section in [values.yaml](values.yaml).
+
+#### GraphRAG Workflows Database Credentials
+
+`graphrag-workflows-postgres-app` should contain the credentials the GraphRAG Workflows uses for connecting to a
+PostgreSQL instance. By default, the chart expects the following key in this Secret:
+
+* `username` - Username for the PostgreSQL database
+* `password` - Password for the PostgreSQL database
+
+#### GraphRAG Components Secrets
+
+For GraphRAG Components service, you need to create a secret containing the credentials for connecting to the vector
+database. For example, if you are using OpenSearch in AWS, you can create the following secrets:
+
+**Vector database credentials**
+
+```shell
+kubectl -n graphrag create configmap graphrag-components-vector-database \
+  --from-literal=VECTOR_STORE='opensearch' \
+  --from-literal=OPENSEARCH_ENDPOINT='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
+  --from-literal=VECTOR_INDEX='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
+  --from-literal=VECTOR_FIELD_NAME='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
+
+**AWS credentials**
+
+```shell
+kubectl -n graphrag create secret generic graphrag-components-aws-credentials \
+  --from-literal=AWS_REGION='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
+  --from-literal=AWS_ACCESS_KEY_ID='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \
+  --from-literal=AWS_SECRET_ACCESS_KEY='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
+
+You can then use these secrets by configuring the `components.configuration.extra` section in
+[values.yaml](values.yaml):
+
+```yaml
+components:
+  configuration:
+    existingProperties:
+      - secretRef:
+          name: graphrag-components-vector-database
+      - secretRef:
+          name: graphrag-components-aws-credentials
+```
+
+Please refer to the official documentation for further information about how to configure the
+services https://help.graphwise.ai/en/graphrag.html.
+
+### Extra Configuration
 
 The GraphRAG Helm charts are designed to be customized and reconfigured in a myriad of ways:
 
@@ -117,51 +210,37 @@ For simplicity, we have fixed the resource names, so they can be easily referenc
 You can override this by providing a different values.yaml file, but you must take care of service references.
 
 Furthermore, we have configured the Ingress resources to use the `127.0.0.1.nip.io` domain name so for any non-test
-deployment,
-you need to override this.
+deployment, you need to override this.
 
-### Deploy
+### Examples
 
-Once you have prepared all required configurations and secrets, simply execute the following command:
+You can find examples of how to use the GraphRAG Helm charts in the [examples/](examples) directory:
 
-```shell
-helm --namespace graphrag upgrade --install --dependency-update -f values.example.yaml graphrag .
-```
+* [examples/dev](examples/dev) - How to deploy GraphRAG for development and testing purposes
+* [examples/kind](examples/kind) - How to deploy a local Kubernetes cluster using [kind](https://kind.sigs.k8s.io/)
+* [examples/nginx-ingress](examples/nginx-ingress) - How to expose the GraphRAG services using the NGINX Ingress
+  controller
 
-## Post-Install
+## Install
 
-### GraphRAG Workflows Provisioning
-
-GraphRAG Workflows uses [n8n](https://n8n.io/) which can be provisioned and updated if needed, by executing SQL scripts
-against its PostgreSQL database. For this, Graphwise provides the necessary initialization SQL scripts.
-
-Once you have deployed GraphRAG and have been provided with an initialization SQL script, you can use the following
-command to find the PostgreSQL leader and provision n8n:
+Once you have prepared all required configurations and secrets, you can execute the following command:
 
 ```shell
-CLUSTER_NAME="graphrag-postgres-n8n"
-DATABASE_NAME="n8n"
-PRIMARY_POD=$(kubectl -n graphrag get pod -l "cnpg.io/cluster=$CLUSTER_NAME,cnpg.io/instanceRole=primary" -o jsonpath='{.items[0].metadata.name}')
-kubectl -n graphrag exec -i $PRIMARY_POD -- psql -v ON_ERROR_STOP=1 -d $DATABASE_NAME < n8n_db_script_v.2.4.4.sql
+helm --namespace graphrag upgrade --install --dependency-update -f <your values overrides> graphrag graphwise-graphrag/graphrag
 ```
 
-Note: If your cluster and database are named differently, you might need to adjust the above script snippet accordingly.
+### Post-Install
 
 ### GraphRAG Workflows Dependencies
 
-**Important**: These workflows might contain references and URLs to the GraphRAG services, so make sure they match the
+**Important**: The workflows might contain references and URLs to the GraphRAG services, so make sure they match the
 actual service names in the cluster. You can check the service names by running:
 
 ```shell
 kubectl -n graphrag get svc
 ```
 
-### N8N Datatables
-
-There might be additional steps for completing the N8N workflow integration, such as creating N8N datatables with API
-keys. This varies by use case, so make sure to follow the documentation for your specific use case.
-
-## Production
+### Production
 
 The GraphRAG Helm chart is designed to be used in a production environment but is not opinionated about the underlying
 infrastructure. This means that you need to fine-tune the Helm chart values to match your specific environment and use
@@ -174,9 +253,12 @@ case. This includes:
 * Network policies
 * etc.
 
-## Development
+Additionally, we recommended to:
 
-Checkout the dev example in [examples/dev/](examples/dev).
+* Use a managed Kubernetes cluster like [AWS EKS](https://aws.amazon.com/eks/)
+  or [Azure AKS](https://azure.microsoft.com/en-us/products/kubernetes-service)
+* Configure multi-replica deployments of the services and their dependencies for better availability, throughput and
+  fault tolerance.
 
 ## Uninstall
 

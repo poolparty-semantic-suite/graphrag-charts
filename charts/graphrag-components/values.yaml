@@ -121,7 +121,6 @@ autoscaling:
 ######################################
 
 # GraphRAG Components runtime configuration settings.
-# For reference, see https://gitlab.ontotext.com/graphwise-graphrag/graphrag-components
 configuration:
 
   # GraphRAG Components properties to insert in the default ConfigMap.
@@ -152,7 +151,6 @@ configuration:
 
   # Default Java arguments with which GraphRAG Components instances will be launched.
   # The value is processed as a Helm template.
-  # Ref: https://gitlab.ontotext.com/graphwise-graphrag/graphrag-components
   defaultJavaArguments: -XX:MaxRAMPercentage=85
 
   # Java arguments to append after .Values.configuration.defaultJavaArguments

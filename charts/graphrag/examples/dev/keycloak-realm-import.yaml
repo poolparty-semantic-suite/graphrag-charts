@@ -35,7 +35,7 @@ spec:
             value: bob123
             temporary: false
     clients:
-      - clientId: chatbot-app-client
+      - clientId: graphrag-chatbot
         secret: null
         enabled: true
         protocol: openid-connect
@@ -46,7 +46,7 @@ spec:
           - https://127.0.0.1.nip.io
         standardFlowEnabled: true
         directAccessGrantsEnabled: true
-      - clientId: conversation-api-client
+      - clientId: graphrag-conversation
         secret: change-me-please
         enabled: true
         protocol: openid-connect

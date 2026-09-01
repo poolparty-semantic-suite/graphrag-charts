@@ -6,4 +6,5 @@ charts/*.tgz
 
 # Overrides for local development and testing
 values.dev.yaml
+values.overrides.yaml
 output.yaml
