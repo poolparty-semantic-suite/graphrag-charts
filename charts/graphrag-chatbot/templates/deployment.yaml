@@ -123,7 +123,7 @@ spec:
           {{- with .Values.initContainerSecurityContext }}
           securityContext: {{- toYaml . | nindent 12 }}
           {{- end }}
-          command: [ "bash", "-c" ]
+          command: [ "sh", "-c" ]
           args:
             - |
               set -eu

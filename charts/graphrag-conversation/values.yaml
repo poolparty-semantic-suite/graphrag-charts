@@ -121,7 +121,6 @@ autoscaling:
 ########################################
 
 # GraphRAG Conversation runtime configuration settings.
-# For reference, see https://gitlab.ontotext.com/graphwise-graphrag/graphrag-conversation
 configuration:
 
   # GraphRAG Conversation properties to insert in the default ConfigMap.
@@ -142,9 +141,33 @@ configuration:
     # The following properties are env-specific, so they should be overridden.
     n8n.base.url: http://graphrag-workflows:5678
     n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
+    spring.security.oauth2.client.registration.keycloak.scope: openid
+    spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
     spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak:8080/realms/graphrag/protocol/openid-connect/certs
     spring.security.oauth2.resourceserver.jwt.issuer-uri: https://auth.127.0.0.1.nip.io/realms/graphrag
     keycloak.health.url: http://keycloak:9000/health
+
+  # Configurations for using DuckDB as a database for GraphRAG Conversation.
+  duckdb:
+    # Credentials for connecting to the DuckDB database.
+    credentials:
+      # Reference to a Secret containing the credentials for connecting to the DuckDB database.
+      # The value is processed as a Helm template.
+      existingSecret: ""
+      # Name of the key in the existing Secret that contains the username.
+      usernameKey: username
+      # Name of the key in the existing Secret that contains the password.
+      passwordKey: password
+
+  # Configurations for Keycloak as an identity provider.
+  keycloak:
+    # Credentials for connecting to Keycloak.
+    oauth2_client:
+      # Reference to a Secret containing the client credentials secret for connecting to Keycloak.
+      # The value is processed as a Helm template.
+      existingSecret: ""
+      # Name of the key in the existing Secret that contains the client secret.
+      clientSecretKey: client-secret
 
   # Reference to existing ConfigMap or Secret resources containing configuration properties that will be included as environment variables.
   # Takes precedence over .Values.configuration.properties.
@@ -161,7 +184,6 @@ configuration:
 
   # Default Java arguments with which GraphRAG Conversation instances will be launched.
   # The value is processed as a Helm template.
-  # Ref: https://gitlab.ontotext.com/graphwise-graphrag/graphrag-conversation
   defaultJavaArguments: -XX:MaxRAMPercentage=85
 
   # Java arguments to append after .Values.configuration.defaultJavaArguments

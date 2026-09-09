@@ -1,10 +1,20 @@
 # GraphRAG Chatbot Changelog
 
+## Version 1.3.1
+
+### Updated
+
+- Added Apache 2.0 license to be packaged with the chart
+
+### Fixed
+
+- Replaced `bash` with `sh` in the init container that copies the NGINX configuration files.
+
 ## Version 1.3.0
 
 ### New
 
-- Updated to version v1.3.0 of the GraphRAG Chatbot application
+- Updated to version 1.3.0 of the GraphRAG Chatbot application
 
 ## Version 1.2.2
 
@@ -24,9 +34,9 @@
 
 ## Version 1.2.0
 
-### New
+### Updated
 
-- Updated to version v1.2.0 of the GraphRAG Chatbot application
+- Updated to version 1.2.0 of the GraphRAG Chatbot application
 
 ## Version 1.1.1
 
@@ -37,9 +47,9 @@
 
 ## Version 1.1.0
 
-### New
+### Updated
 
-- Updated to version v1.1.0 of the GraphRAG Chatbot application
+- Updated to version 1.1.0 of the GraphRAG Chatbot application
 
 ## Version 1.0.0
 

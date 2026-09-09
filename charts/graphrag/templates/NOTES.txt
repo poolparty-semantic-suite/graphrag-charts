@@ -8,30 +8,48 @@
                                       by Graphwise
 -----------------------------------------------------------------------------------------
 
-GraphRAG chart version={{ .Chart.Version }}
+GraphRAG chart version = {{ .Chart.Version }}
 {{ "" }}
+
 {{- if .Values.chatbot.enabled }}
-GraphRAG Chatbot UI {{ coalesce .Values.chatbot.image.tag .Subcharts.chatbot.Chart.AppVersion }} on {{ include "graphrag-chatbot.external-url" .Subcharts.chatbot }}
-  chart version={{ .Subcharts.chatbot.Chart.Version }}
-  replicas={{ .Values.chatbot.replicas }}
+GraphRAG Chatbot UI is enabled
+  url = {{ include "graphrag-chatbot.external-url" .Subcharts.chatbot }}
+  chart version = {{ .Subcharts.chatbot.Chart.Version }}
+  image = {{ include "graphrag-chatbot.image" .Subcharts.chatbot }}
+  replicas = {{ .Values.chatbot.replicas }}
+{{- else }}
+GraphRAG Chatbot UI is disabled
 {{- end }}
 {{ "" }}
+
 {{- if .Values.conversation.enabled }}
-GraphRAG Conversation {{ coalesce .Values.conversation.image.tag .Subcharts.conversation.Chart.AppVersion }}
-  chart version={{ .Subcharts.conversation.Chart.Version }}
-  replicas={{ .Values.conversation.replicas }}
+GraphRAG Conversation is enabled
+  chart version = {{ .Subcharts.conversation.Chart.Version }}
+  image = {{ include "graphrag-conversation.image" .Subcharts.conversation }}
+  replicas = {{ .Values.conversation.replicas }}
+{{- else }}
+GraphRAG Conversation is disabled
 {{- end }}
 {{ "" }}
+
 {{- if .Values.components.enabled }}
-GraphRAG Components {{ coalesce .Values.components.image.tag .Subcharts.components.Chart.AppVersion }}
-  chart version={{ .Subcharts.components.Chart.Version }}
-  replicas={{ .Values.components.replicas }}
+GraphRAG Components is enabled
+  chart version = {{ .Subcharts.components.Chart.Version }}
+  image = {{ include "graphrag-components.image" .Subcharts.components }}
+  replicas = {{ .Values.components.replicas }}
+{{- else }}
+GraphRAG Components is disabled
 {{- end }}
 {{ "" }}
+
 {{- if .Values.workflows.enabled }}
-GraphRAG Workflows {{ coalesce .Values.workflows.image.tag .Subcharts.workflows.Chart.AppVersion }} on {{ include "graphrag-workflows.external-url" .Subcharts.workflows }}
-  chart version={{ .Subcharts.workflows.Chart.Version }}
-  replicas={{ .Values.workflows.replicas }}
+GraphRAG Workflows is enabled
+  url = {{ include "graphwise-workflows.external-url" .Subcharts.workflows }}
+  chart version = {{ .Subcharts.workflows.Chart.Version }}
+  image = {{ include "graphwise-workflows.image" .Subcharts.workflows }}
+  replicas = {{ .Values.workflows.replicas }}
+{{- else }}
+GraphRAG Workflows is disabled
 {{- end }}
 
 ** Please be patient while the chart is being deployed and services are available **

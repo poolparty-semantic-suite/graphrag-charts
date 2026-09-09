@@ -152,9 +152,29 @@ spec:
             {{- with .Values.extraEnvFrom }}
               {{- tpl (toYaml .) $ | nindent 12 }}
             {{- end }}
-          {{- with .Values.extraEnv }}
-          env: {{- tpl (toYaml .) $ | nindent 12 }}
-          {{- end }}
+          env:
+            {{- if or .Values.configuration.duckdb.credentials.existingSecret }}
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.duckdb.credentials.existingSecret . }}
+                  key: {{ .Values.configuration.duckdb.credentials.usernameKey }}
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.duckdb.credentials.existingSecret . }}
+                  key: {{ .Values.configuration.duckdb.credentials.passwordKey }}
+            {{- end }}
+            {{- if .Values.configuration.keycloak.oauth2_client.existingSecret }}
+            - name: spring.security.oauth2.client.registration.keycloak.client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.keycloak.oauth2_client.existingSecret . }}
+                  key: {{ .Values.configuration.keycloak.oauth2_client.clientSecretKey }}
+            {{- end }}
+            {{- with .Values.extraEnv }}
+              {{- tpl (toYaml .) $ | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: {{ .Values.persistence.volumeClaimTemplate.name }}
               mountPath: {{ tpl .Values.persistence.path . }}

@@ -36,7 +36,7 @@ jobs:
 
       - id: run_chart_testing
         name: Run chart-testing (lint)
-        run: ct lint --all --chart-dirs charts/
+        run: ct lint --all --chart-dirs charts/ --config ct.yaml
 
       - id: run_helm_dependency_build
         name: Run helm dependency build
@@ -49,7 +49,7 @@ jobs:
         name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          scan-type: 'fs'
+          scan-type: 'repo'
           scan-ref: '.'
           trivy-config: trivy.yaml
           hide-progress: false

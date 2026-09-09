@@ -12,123 +12,259 @@
 # 1) The services are with fixed names, so they can be easily referenced in across the default configurations.
 #    You can override this by providing a different values.yaml file, but you must take care of service references.
 
-#################################################################
-#       Global configurations visible in all Helm charts        #
-# Note: This depend on how the different charts are implemented #
-#################################################################
+########################################################################################################################
+# GLOBAL PARAMETERS
+########################################################################################################################
 
+#
+# Global parameters that are accessible by all sub-charts.
+#
 global:
-  imagePullSecrets:
-    - name: graphwise
+  # Globally accessible parameters for all GraphRAG components.
+  graphrag:
+    # The base URL for accessing the GraphRAG components.
+    # This must be a valid URL, including the protocol (http/https). It can also accept a context path if needed.
+    #
+    # The value is processed as a Helm template with the tpl function.
+    url: https://127.0.0.1.nip.io/graphrag/
+    # GraphRAG Keycloak configurations.
+    keycloak:
+      # The base URL for accessing the Keycloak service.
+      #
+      # The value is processed as a Helm template with the tpl function.
+      url: https://127.0.0.1.nip.io/auth
+      # The Keycloak realm to use in GraphRAG.
+      realm: graphrag
+
+  # Overrides image.registry for all components directly deployed by this chart as well as any sub-charts that reads
+  # this global parameter.
+  imageRegistry: ""
+
+  # Inserts image pull secret references.
+  # Use it when you need to pull images from the Graphwise private registry.
+  #
+  # Ref: https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets
+  #
+  # Example:
+  # imagePullSecrets:
+  #   - name: my-pull-secret
+  imagePullSecrets: []
 
 ###########################################################
 # Configurations for the GraphRAG Chatbot web application #
 ###########################################################
 
+# GraphRAG Chatbot is a web application that allows users to interact with the GraphRAG system through a chat interface.
+#
+# This is a stateless application that does not require any persistent storage.
 chatbot:
+  # Toggles the deployment of the Chatbot application.
   enabled: true
 
+  # Name for the Chatbot application resources.
   fullnameOverride: graphrag-chatbot
 
+  # Number of Chatbot app pods to deploy in the cluster.
+  # Ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#replicas
   replicas: 1
 
+  # Configuration for the Chatbot application.
+  # Refer to the subchart for the full set of available configuration options.
   configuration:
-    externalUrl: https://127.0.0.1.nip.io/graphrag/
+    # The external URL at which GraphRAG Chatbot should be accessible.
+    externalUrl: '{{ include "graphrag.url" . }}/'
 
+    # By default, the chart deploys the Chatbot application as a proxy for the Conversation service.
     conversationProxy:
       enabled: true
       url: http://graphrag-conversation:8080/
 
+    # GraphRAG Chatbot configuration properties, injected as environment variables.
     properties:
-      GRAPHRAG_BACKEND_URL: https://127.0.0.1.nip.io/graphrag/conversations
-      GRAPHRAG_KEYCLOAK_URL: https://auth.127.0.0.1.nip.io/
-      GRAPHRAG_KEYCLOAK_REALM: graphrag
-      GRAPHRAG_KEYCLOAK_CLIENT_ID: chatbot-app-client
+      GRAPHRAG_BACKEND_URL: '{{ include "graphrag.url" . }}/conversations'
+      GRAPHRAG_KEYCLOAK_URL: '{{ include "graphrag.keycloak.url" . }}'
+      GRAPHRAG_KEYCLOAK_REALM: '{{ .Values.global.graphrag.keycloak.realm }}'
+      GRAPHRAG_KEYCLOAK_CLIENT_ID: graphrag-chatbot
+
+  # The ingress in this chart makes no assumptions of what Ingress controller is being used. It's up to you to
+  # define any specific annotations required by the controller implementation in your cluster.
+  #
+  # See examples/nginx-ingress/ on how to expose the Chatbot via the NGINX Ingress controller.
+  ingress:
+    enabled: true
+    className: ""
+    annotations: {}
 
 ########################################################
 # Configurations for the GraphRAG Conversation service #
 ########################################################
 
+# The Conversation service is responsible for handling user interactions with the GraphRAG system via a REST API.
+# It delegates the actual processing of the requests to GraphRAG Workflows service and acts as a bridge between them.
+#
+# This is a stateful application that requires persistent storage.
+# Ref: https://help.graphwise.ai/en/graphwise-api-endpoints/graphrag/conversations-service-api.html
 conversation:
+  # Toggles the deployment of the GraphRAG Conversation service.
   enabled: true
 
+  # Name for the GraphRAG Conversation resources.
   fullnameOverride: graphrag-conversation
 
   # Currently, this service does not support multiple replicas due to the usage of an embedded database.
   replicas: 1
 
+  # Configurations for the GraphRAG Conversation service.
+  # Refer to the subchart for the full set of available configuration options.
   configuration:
+    # GraphRAG Conversation configuration properties, injected as environment variables.
     properties:
       cors.disable: true
+      # Workflows
       n8n.base.url: http://graphrag-workflows:5678
       n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
-      spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://graphrag-keycloak-service.keycloak:8080/realms/graphrag/protocol/openid-connect/certs
-      spring.security.oauth2.resourceserver.jwt.issuer-uri: https://auth.127.0.0.1.nip.io/realms/graphrag
-      keycloak.health.url: http://graphrag-keycloak-service.keycloak:9000/health
+      # Keycloak
+      spring.security.oauth2.client.registration.keycloak.scope: openid
+      spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
+      spring.security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://graphrag-keycloak-service.keycloak:8080/auth/realms/{{ .Values.global.graphrag.keycloak.realm }}/protocol/openid-connect/certs'
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: '{{ include "graphrag.keycloak.url" . }}/realms/{{ .Values.global.graphrag.keycloak.realm }}'
+      keycloak.health.url: http://graphrag-keycloak-service.keycloak:9000/auth/health
+      # Swagger
       springdoc.api-docs.server-url: /graphrag/conversations
       springdoc.swagger-ui.config-url: /graphrag/conversations/v3/api-docs/swagger-config
       springdoc.swagger-ui.url: /graphrag/conversations/v3/api-docs
 
-    existingProperties: []
-    # Example usage:
-    #  - secretRef:
-    #      name: graphrag-conversation-database-credentials
-    #  - secretRef:
-    #      name: graphrag-conversation-keycloak-client
+    # Configurations for using DuckDB as a database for GraphRAG Conversation.
+    duckdb:
+      credentials:
+        existingSecret: graphrag-conversation-database-credentials
+        usernameKey: username
+        passwordKey: password
+
+    # Configurations for Keycloak as an identity provider.
+    keycloak:
+      oauth2_client:
+        existingSecret: graphrag-conversation-keycloak-secrets
+        clientSecretKey: client-secret
+
+  # By default, the Conversation API is exposed via the Chatbot application NGINX.
+  # Override if you want to expose directly via an Ingress resource.
+  ingress:
+    enabled: false
 
 ######################################################
 # Configurations for the GraphRAG Components service #
 ######################################################
 
+# The Components service is responsible for providing vector embeddings and semantic search capabilities.
+# This service configuration highly depends on the embedding model and provider you choose and where it is deployed, so
+# you need to configure it accordingly.
+#
+# This is a stateless application that does not require any persistent storage.
+# Ref: https://help.graphwise.ai/en/graphwise-api-endpoints/graphrag/components-service-api.html
 components:
+  # Toggles the deployment of the GraphRAG Components service.
   enabled: true
 
+  # Name for the GraphRAG Components resources.
   fullnameOverride: graphrag-components
 
+  # Number of GraphRAG Componentspods to deploy in the cluster.
+  # Ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#replicas
   replicas: 1
 
+  # Configurations for the GraphRAG Components service.
+  # Refer to the subchart for the full set of available configuration options.
   configuration:
-    properties:
-      EMBEDDING_PROVIDER: aws
-      EMBEDDING_MODEL_ID: "cohere.embed-english-v3"
-      INCLUDE_VECTOR_DATA: false
+    # GraphRAG Components properties to inject as environment variables.
+    #
+    # Example:
+    # properties:
+    #   EMBEDDING_MODEL_ID : "cohere.embed-english-v3"
+    properties: {}
 
-    existingProperties: []
+    # Additional properties to inject via ConfigMap or Secret resources.
+    #
     # Example usage:
     #  - configMapRef:
     #      name: graphrag-components-vector-database
     #  - secretRef:
     #      name: graphrag-components-aws-credentials
+    existingProperties: []
 
 ##########################################################
 # Configurations for the GraphRAG Workflows orchestrator #
 ##########################################################
 
+# The Workflows service is responsible for orchestrating the execution of the GraphRAG workflows.
+#
+# This is a stateless application that connects to an external PostgreSQL database.
+# Ref: https://github.com/poolparty-semantic-suite/graphwise-workflows-chart
+# Ref: https://help.graphwise.ai/en/graphrag/graphrag-workflow-guide/overview.html
 workflows:
+  # Toggles the deployment of the GraphRAG Workflows service.
   enabled: true
 
+  # Name for the GraphRAG Workflows resources.
   fullnameOverride: graphrag-workflows
 
+  # Image configuration for the GraphRAG Workflows service.
+  # GraphRAG Workflows is currently using a different image from the one provided in the upstream chart.
+  image:
+    repository: graphrag-workflows
+    tag: 1.3.0
+
+  # License configurations for the GraphRAG Workflows service.
+  # You need N8N Enterprise license for certain features required by the Workflows service.
+  license:
+    existingSecret: graphrag-workflows-license
+    licenseKey: LICENSE_KEY
+    # Update to your actual tenant identifier
+    tenantId: 1
+
+  # Configuration for the GraphRAG Workflows service.
+  # Refer to the subchart for the full set of available configuration options.
+  configuration:
+    # The external URL at which GraphRAG Workflows should be accessible.
+    externalUrl: '{{ include "graphrag.url" . }}/workflows/'
+
+    # Encryption configurations for the GraphRAG Workflows service.
+    # Ref: https://docs.n8n.io/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment
+    encryption:
+      existingSecret: graphrag-workflows-encryption
+
+    # Database configurations for the GraphRAG Workflows service.
+    # The defaults have been adjusted to work with a PostgreSQL database deployed by the CNPG operator.
+    # Tune these according to your environment if you have your own PostgreSQL cluster.
+    # Ref: https://docs.n8n.io/hosting/configuration/environment-variables/database/#postgresql
+    postgresdb:
+      host: graphrag-workflows-postgres-rw
+      database: graphrag
+      credentials:
+        existingSecret: graphrag-workflows-postgres-app
+        usernameKey: username
+        passwordKey: password
+
+  # The ingress in this chart makes no assumptions of what Ingress controller is being used. It's up to you to
+  # define any specific annotations required by the controller implementation in your cluster.
+  #
+  # See examples/nginx-ingress/ on how to expose the Workflows via the NGINX Ingress controller.
   ingress:
     enabled: true
-    path: /graphrag/workflows(/|$)(.*)
-    pathType: ImplementationSpecific
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /$2
+    className: ""
+    annotations: {}
 
-  # Ref https://docs.n8n.io/hosting/configuration/
-  configuration:
-    externalUrl: https://127.0.0.1.nip.io/graphrag/workflows/
-
-    encryption:
-      existingSecret: graphrag-n8n-encryption
-
-    license:
-      existingSecret: graphrag-n8n-license
-      tenantId: 1
-
-    postgresdb:
-      host: graphrag-postgres-n8n-rw
-      database: n8n
-      credentials:
-        existingSecret: graphrag-n8n-database-credentials
+  # Configurations for the bootstrap job that initializes the Workflows service.
+  # This is a Kubernetes Job wrapped as a Helm hook that runs after the initial deployment.
+  bootstrap:
+    # Toggles the bootstrap Job deployment.
+    enabled: true
+    # Helm hook configurations.
+    hook:
+      annotations:
+        # You can use post-upgrade as well, if needed.
+        helm.sh/hook: post-install
+    image:
+      # The image used for the bootstrap Job.
+      repository: graphrag-workflows-bootstrap
+      tag: 1.3.0

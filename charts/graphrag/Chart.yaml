@@ -2,7 +2,7 @@ apiVersion: v2
 name: graphrag
 description: GraphRAG bundle
 type: application
-version: 1.3.0
+version: 2.0.0
 kubeVersion: ^1.32.0-0
 home: https://graphwise.ai/
 maintainers:
@@ -20,25 +20,25 @@ keywords:
 dependencies:
   # GraphRAG Chatbot v1.3.0
   - name: graphrag-chatbot
-    version: 1.3.0
+    version: 1.3.1
     repository: file://../graphrag-chatbot/
     alias: chatbot
     condition: chatbot.enabled
   # GraphRAG Conversation v1.3.0
   - name: graphrag-conversation
-    version: 1.3.0
+    version: 1.4.0
     repository: file://../graphrag-conversation
     alias: conversation
     condition: conversation.enabled
   # GraphRAG Components v1.3.0
   - name: graphrag-components
-    version: 1.3.0
+    version: 1.3.1
     repository: file://../graphrag-components
     alias: components
     condition: components.enabled
   # GraphRAG Workflows v1.3.0
-  - name: graphrag-workflows
-    version: 1.3.0
-    repository: file://../graphrag-workflows
+  - name: graphwise-workflows
+    version: 0.2.0
+    repository: https://poolparty-semantic-suite.github.io/graphwise-workflows-chart
     alias: workflows
     condition: workflows.enabled

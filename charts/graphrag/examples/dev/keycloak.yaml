@@ -3,17 +3,16 @@ kind: Keycloak
 metadata:
   name: graphrag-keycloak
 spec:
-  instances: 2
-  # image: quay.io/phasetwo/phasetwo-keycloak:26.4.2
+  instances: 1
   db:
     vendor: postgres
-    host: keycloak-postgres-rw
+    host: graphrag-keycloak-postgres-rw
     database: keycloak
     usernameSecret:
-      name: keycloak-postgres-user
+      name: graphrag-keycloak-postgres-app
       key: username
     passwordSecret:
-      name: keycloak-postgres-user
+      name: graphrag-keycloak-postgres-app
       key: password
   ingress:
     enabled: true
@@ -21,7 +20,16 @@ spec:
   http:
     httpEnabled: true
   hostname:
-    hostname: auth.127.0.0.1.nip.io
+    hostname: https://127.0.0.1.nip.io/auth
     strict: true
+    backchannelDynamic: true
   proxy:
     headers: xforwarded
+  additionalOptions:
+    - name: http-relative-path
+      value: /auth
+  resources:
+    requests:
+      memory: 2Gi
+    limits:
+      memory: 2Gi

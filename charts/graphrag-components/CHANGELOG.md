@@ -1,10 +1,16 @@
 # GraphRAG Components Changelog
 
+## Version 1.3.1
+
+### Updated
+
+- Added Apache 2.0 license to be packaged with the chart
+
 ## Version 1.3.0
 
 ### New
 
-- Updated to version v1.3.0 of the GraphRAG Components service
+- Updated to version 1.3.0 of the GraphRAG Components service
 
 ## Version 1.2.1
 
@@ -14,9 +20,9 @@
 
 ## Version 1.2.0
 
-### New
+### Updated
 
-- Updated to version v1.2.0 of the GraphRAG Components service
+- Updated to version 1.2.0 of the GraphRAG Components service
 
 ## Version 1.1.1
 
@@ -27,9 +33,9 @@
 
 ## Version 1.1.0
 
-### New
+### Updated
 
-- Updated to version v1.1.0 of the GraphRAG Components service
+- Updated to version 1.1.0 of the GraphRAG Components service
 
 ## Version 1.0.0
 

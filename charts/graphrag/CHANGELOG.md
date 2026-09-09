@@ -1,5 +1,26 @@
 # GraphRAG Changelog
 
+## Version 2.0.0
+
+### Breaking Changes
+
+Beginning with 2.0.0, we have replaced the GraphRAG Workflows Helm chart with a new generic Graphwise Workflows Helm
+chart. Refer to the [Upgrade guide for 2.0.0](UPGRADE.md#200) for more details and migration steps.
+
+### New
+
+- Added Apache 2.0 license to be packaged with the chart.
+- Added documentation notes and references in the [values.yaml](values.yaml) file.
+- Added `global.graphragh` section with common configuration variables that are used across the subcharts via Helm
+  templates.
+- Conversation service credentials for DuckDB and Keycloak are now configured with the new explicit
+  `conversation.configuration.duckdb` and `conversation.configuration.keycloak` configurations respectively.
+- Enabled the Workflows bootstrap by running a Helm hook that provisions the database with a baseline of workflows.
+
+### Updated
+
+- Major overhaul of the chart documentation, README.md and examples under [examples/](examples).
+
 ## Version 1.3.0
 
 ### Updated
