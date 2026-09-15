@@ -1,5 +1,11 @@
 # GraphRAG Conversation Changelog
 
+## Version 1.4.1
+
+### Fixed
+
+- Updated the `n8n.chat.webhook.url` property to include the `custom` query param as well.
+
 ## Version 1.4.0
 
 ### New

@@ -140,7 +140,7 @@ configuration:
     server.forward-headers-strategy: framework
     # The following properties are env-specific, so they should be overridden.
     n8n.base.url: http://graphrag-workflows:5678
-    n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
+    n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}&custom={custom}
     spring.security.oauth2.client.registration.keycloak.scope: openid
     spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
     spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak:8080/realms/graphrag/protocol/openid-connect/certs

@@ -1,5 +1,15 @@
 # GraphRAG Changelog
 
+## Version 2.0.1
+
+### Updated
+
+- Updated the Conversation service to chart version 1.4.1
+
+### Fixed
+
+- Updated the `n8n.chat.webhook.url` property of the Conversation service to include the `custom` query param as well.
+
 ## Version 2.0.0
 
 ### Breaking Changes

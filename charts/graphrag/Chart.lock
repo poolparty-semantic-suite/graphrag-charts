@@ -4,12 +4,12 @@ dependencies:
   version: 1.3.1
 - name: graphrag-conversation
   repository: file://../graphrag-conversation
-  version: 1.4.0
+  version: 1.4.1
 - name: graphrag-components
   repository: file://../graphrag-components
   version: 1.3.1
 - name: graphwise-workflows
   repository: https://poolparty-semantic-suite.github.io/graphwise-workflows-chart
   version: 0.2.0
-digest: sha256:755cc44c1968314212a2044813515c99d622c4f56a237e67df058e0c226f122a
-generated: "2026-09-01T16:27:13.458159068+03:00"
+digest: sha256:78e159a1c36291b05b88b15e12aa5214538b86b8ea0ba61e682e3515bb77350d
+generated: "2026-09-14T17:07:00.870851438+03:00"

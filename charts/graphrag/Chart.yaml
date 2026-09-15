@@ -2,7 +2,7 @@ apiVersion: v2
 name: graphrag
 description: GraphRAG bundle
 type: application
-version: 2.0.0
+version: 2.0.1
 kubeVersion: ^1.32.0-0
 home: https://graphwise.ai/
 maintainers:
@@ -26,7 +26,7 @@ dependencies:
     condition: chatbot.enabled
   # GraphRAG Conversation v1.3.0
   - name: graphrag-conversation
-    version: 1.4.0
+    version: 1.4.1
     repository: file://../graphrag-conversation
     alias: conversation
     condition: conversation.enabled

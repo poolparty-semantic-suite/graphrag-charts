@@ -122,7 +122,7 @@ conversation:
       cors.disable: true
       # Workflows
       n8n.base.url: http://graphrag-workflows:5678
-      n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}
+      n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}&custom={custom}
       # Keycloak
       spring.security.oauth2.client.registration.keycloak.scope: openid
       spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
