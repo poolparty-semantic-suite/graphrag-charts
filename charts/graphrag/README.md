@@ -111,23 +111,6 @@ conversation:
         existingSecret: <your-secret-name>
 ```
 
-#### GraphRAG Conversation Keycloak Secrets
-
-`graphrag-conversation-keycloak-secrets` should contain a client credentials secret for the GraphRAG Conversation
-service used to authenticate with Keycloak. By default, the chart expects the following key in this Secret:
-
-* `client-secret` - Keycloak confidential client secret value
-
-You can create this Secret by running the following command:
-
-```shell
-kubectl -n graphrag create secret generic graphrag-conversation-keycloak-secrets \
-        --from-literal=client-secret='<client-secret-for-keycloak>'
-```
-
-If you are using a different name or keys for this Secret, you can update the `conversation.configuration.keycloak`
-section in [values.yaml](values.yaml).
-
 #### GraphRAG Workflows Encryption
 
 `graphrag-workflows-encryption` should contain the key that encrypts sensitive data in the GraphRAG Workflows service.

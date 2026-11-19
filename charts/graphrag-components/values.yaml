@@ -151,7 +151,7 @@ configuration:
 
   # Default Java arguments with which GraphRAG Components instances will be launched.
   # The value is processed as a Helm template.
-  defaultJavaArguments: -XX:MaxRAMPercentage=85
+  defaultJavaArguments: -XX:MaxRAMPercentage=85 -XX:-UseBASE64Intrinsics
 
   # Java arguments to append after .Values.configuration.defaultJavaArguments
   # Use this one to avoid overriding the default values.

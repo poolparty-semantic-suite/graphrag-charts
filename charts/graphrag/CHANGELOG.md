@@ -1,5 +1,15 @@
 # GraphRAG Changelog
 
+## Version 3.0.0
+
+### Updated
+
+- Updated the subcharts to the new major version 2.0.0 of GraphRAG. Check their respective `CHANGELOG.md` files for more
+  details.
+- [conversation] Removed all query parameters from the `n8n.chat.webhook.url` configuration
+- [conversation] Removed `conversation.configuration.keycloak` configurations
+- [conversation] Removed unused Keycloak properties in `conversation.configuration`
+
 ## Version 2.0.1
 
 ### Updated

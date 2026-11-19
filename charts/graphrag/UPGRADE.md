@@ -1,5 +1,9 @@
 # GraphRAG Upgrade Guidelines
 
+## 3.0.0
+
+- `conversation.configuration.keycloak` is no longer needed so you can remove the related Secret
+
 ## 2.0.0
 
 **Global configurations**

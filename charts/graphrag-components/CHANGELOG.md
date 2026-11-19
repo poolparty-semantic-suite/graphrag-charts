@@ -1,5 +1,12 @@
 # GraphRAG Components Changelog
 
+## Version 2.0.0
+
+### Updated
+
+- Updated to version 2.0.0 of the GraphRAG Components service
+- Updated the name template to render DNS compliant values
+
 ## Version 1.3.1
 
 ### Updated
@@ -8,7 +15,7 @@
 
 ## Version 1.3.0
 
-### New
+### Updated
 
 - Updated to version 1.3.0 of the GraphRAG Components service
 
