@@ -10,6 +10,18 @@ metadata:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 data:
+  {{- if not (hasKey .Values.configuration.properties "spring.datasource.url") }}
+  spring.datasource.url: {{ printf "jdbc:duckdb:%s/duckdb.db" (trimSuffix "/" .Values.persistence.path) }}
+  {{- end }}
+  {{- if not (hasKey .Values.configuration.properties "graphdb.endpoint") }}
+  graphdb.endpoint: {{ .Values.configuration.graphdb.url }}
+  {{- end }}
+  {{- if not (hasKey .Values.configuration.properties "graphdb.auth.type") }}
+  graphdb.auth.type: {{ .Values.configuration.graphdb.auth.type }}
+  {{- end }}
+  {{- if not (hasKey .Values.configuration.properties "elasticsearch.url") }}
+  elasticsearch.url: {{ .Values.configuration.elasticsearch.url }}
+  {{- end }}
   JAVA_OPTS: >-
     {{ tpl .Values.configuration.defaultJavaArguments . }}
     {{ tpl .Values.configuration.javaArguments . }}

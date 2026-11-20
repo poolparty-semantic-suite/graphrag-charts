@@ -130,22 +130,19 @@ configuration:
   # properties:
   #   spring.datasource.url: "jdbc:duckdb:/duckdbdata/graphrag-conversation.db"
   properties:
-    sse.timeout.n8n.milliseconds: 300000
-    spring.datasource.url: jdbc:duckdb:/var/lib/graphrag/conversation/duckdb.db
-    n8n.workflows.volume.path: /var/lib/graphrag/conversation/workflows
-    n8n.credentials.volume.path: /var/lib/graphrag/conversation/credentials
-    springdoc.api-docs.server-url: /conversations
-    springdoc.swagger-ui.config-url: /conversations/v3/api-docs/swagger-config
-    springdoc.swagger-ui.url: /conversations/v3/api-docs
     server.forward-headers-strategy: framework
-    # The following properties are env-specific, so they should be overridden.
+    # N8N settings
     n8n.base.url: http://graphrag-workflows:5678
-    n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}&custom={custom}
-    spring.security.oauth2.client.registration.keycloak.scope: openid
-    spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
+    n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat
+    sse.timeout.n8n.milliseconds: 300000
+    # Keycloak settings
     spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak:8080/realms/graphrag/protocol/openid-connect/certs
     spring.security.oauth2.resourceserver.jwt.issuer-uri: https://auth.127.0.0.1.nip.io/realms/graphrag
     keycloak.health.url: http://keycloak:9000/health
+    # Swagger settings
+    springdoc.api-docs.server-url: /conversations
+    springdoc.swagger-ui.config-url: /conversations/v3/api-docs/swagger-config
+    springdoc.swagger-ui.url: /conversations/v3/api-docs
 
   # Configurations for using DuckDB as a database for GraphRAG Conversation.
   duckdb:
@@ -159,15 +156,58 @@ configuration:
       # Name of the key in the existing Secret that contains the password.
       passwordKey: password
 
-  # Configurations for Keycloak as an identity provider.
-  keycloak:
-    # Credentials for connecting to Keycloak.
-    oauth2_client:
-      # Reference to a Secret containing the client credentials secret for connecting to Keycloak.
-      # The value is processed as a Helm template.
-      existingSecret: ""
-      # Name of the key in the existing Secret that contains the client secret.
-      clientSecretKey: client-secret
+  # Configurations for connecting to GraphDB.
+  graphdb:
+    # The URL where GraphDB is accessible.
+    url: http://graphdb:7200
+    # Authentication settings for GraphDB.
+    auth:
+      # Supported types: none, basic, oauth
+      type: none
+      # Basic authentication to GraphDB.
+      # Used when type: basic
+      basic:
+        # Reference to a Secret containing the basic auth credentials for connecting to GraphDB.
+        # The value is processed as a Helm template.
+        existingSecret: ""
+        # The username for connecting to Elasticsearch. If defined, takes precedence over usernameKey.
+        username: ""
+        # Name of the key in the existing Secret that contains the username.
+        usernameKey: username
+        # Name of the key in the existing Secret that contains the password.
+        passwordKey: password
+      # OAuth2 client credentials authentication to GraphDB.
+      # Used when type: oauth
+      oauth2:
+        # Reference to a Secret containing the OAuth2 credentials for connecting to GraphDB.
+        # The value is processed as a Helm template.
+        existingSecret: ""
+        # Name of the key in the existing Secret that contains the registration ID.
+        registrationIdKey: registration-id
+        # Name of the key in the existing Secret that contains the client ID.
+        clientIdKey: client-id
+        # Name of the key in the existing Secret that contains the client secret.
+        clientSecretKey: client-secret
+        # Name of the key in the existing Secret that contains the token endpoint URI.
+        tokenEndpointKey: token-endpoint
+        # Name of the key in the existing Secret that contains the scopes.
+        scopeKey: scope
+
+  # Configurations for connecting to an Elasticsearch instance.
+  elasticsearch:
+    # The Elasticsearch URL to connecto to.
+    url: http://elasticsearch:9200
+    auth:
+      basic:
+        # Reference to a Secret containing the basic auth credentials for connecting to Elasticsearch.
+        # The value is processed as a Helm template.
+        existingSecret: ""
+        # The username for connecting to Elasticsearch. If defined, takes precedence over usernameKey.
+        username: ""
+        # Name of the key in the existing Secret that contains the username.
+        usernameKey: username
+        # Name of the key in the existing Secret that contains the password.
+        passwordKey: password
 
   # Reference to existing ConfigMap or Secret resources containing configuration properties that will be included as environment variables.
   # Takes precedence over .Values.configuration.properties.
@@ -184,7 +224,7 @@ configuration:
 
   # Default Java arguments with which GraphRAG Conversation instances will be launched.
   # The value is processed as a Helm template.
-  defaultJavaArguments: -XX:MaxRAMPercentage=85
+  defaultJavaArguments: -XX:MaxRAMPercentage=85 -XX:-UseBASE64Intrinsics
 
   # Java arguments to append after .Values.configuration.defaultJavaArguments
   # Use this one to avoid overriding the default values.

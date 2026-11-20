@@ -8,15 +8,15 @@
                                       by Graphwise
 -----------------------------------------------------------------------------------------
 
-GraphRAG chart version = {{ .Chart.Version }}
+GraphRAG chart version: {{ .Chart.Version }}
 {{ "" }}
 
 {{- if .Values.chatbot.enabled }}
 GraphRAG Chatbot UI is enabled
-  url = {{ include "graphrag-chatbot.external-url" .Subcharts.chatbot }}
-  chart version = {{ .Subcharts.chatbot.Chart.Version }}
-  image = {{ include "graphrag-chatbot.image" .Subcharts.chatbot }}
-  replicas = {{ .Values.chatbot.replicas }}
+  url: {{ include "graphrag-chatbot.external-url" .Subcharts.chatbot }}
+  chart version: {{ .Subcharts.chatbot.Chart.Version }}
+  image: {{ include "graphrag-chatbot.image" .Subcharts.chatbot }}
+  replicas: {{ .Values.chatbot.replicas }}
 {{- else }}
 GraphRAG Chatbot UI is disabled
 {{- end }}
@@ -24,9 +24,9 @@ GraphRAG Chatbot UI is disabled
 
 {{- if .Values.conversation.enabled }}
 GraphRAG Conversation is enabled
-  chart version = {{ .Subcharts.conversation.Chart.Version }}
-  image = {{ include "graphrag-conversation.image" .Subcharts.conversation }}
-  replicas = {{ .Values.conversation.replicas }}
+  chart version: {{ .Subcharts.conversation.Chart.Version }}
+  image: {{ include "graphrag-conversation.image" .Subcharts.conversation }}
+  replicas: {{ .Values.conversation.replicas }}
 {{- else }}
 GraphRAG Conversation is disabled
 {{- end }}
@@ -34,9 +34,9 @@ GraphRAG Conversation is disabled
 
 {{- if .Values.components.enabled }}
 GraphRAG Components is enabled
-  chart version = {{ .Subcharts.components.Chart.Version }}
-  image = {{ include "graphrag-components.image" .Subcharts.components }}
-  replicas = {{ .Values.components.replicas }}
+  chart version: {{ .Subcharts.components.Chart.Version }}
+  image: {{ include "graphrag-components.image" .Subcharts.components }}
+  replicas: {{ .Values.components.replicas }}
 {{- else }}
 GraphRAG Components is disabled
 {{- end }}
@@ -44,10 +44,15 @@ GraphRAG Components is disabled
 
 {{- if .Values.workflows.enabled }}
 GraphRAG Workflows is enabled
-  url = {{ include "graphwise-workflows.external-url" .Subcharts.workflows }}
-  chart version = {{ .Subcharts.workflows.Chart.Version }}
-  image = {{ include "graphwise-workflows.image" .Subcharts.workflows }}
-  replicas = {{ .Values.workflows.replicas }}
+  url: {{ include "graphwise-workflows.external-url" .Subcharts.workflows }}
+  chart version: {{ .Subcharts.workflows.Chart.Version }}
+  image: {{ include "graphwise-workflows.image" .Subcharts.workflows }}
+  replicas: {{ .Values.workflows.replicas }}
+  bootstrap: {{ ternary "enabled" "disabled" .Values.workflows.bootstrap.enabled }}
+    {{- if.Values.workflows.bootstrap.enabled }}
+    image: {{ include "graphwise-workflows.bootstrap.job.image" .Subcharts.workflows }}
+    {{- end }}
+
 {{- else }}
 GraphRAG Workflows is disabled
 {{- end }}

@@ -11,6 +11,8 @@
 #
 # 1) The services are with fixed names, so they can be easily referenced in across the default configurations.
 #    You can override this by providing a different values.yaml file, but you must take care of service references.
+# 2) The chart sets references to some expected Kubernetes Secrets, so make sure to create them beforehand and to
+#    update the name references if needed
 
 ########################################################################################################################
 # GLOBAL PARAMETERS
@@ -122,10 +124,8 @@ conversation:
       cors.disable: true
       # Workflows
       n8n.base.url: http://graphrag-workflows:5678
-      n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat?questionId={questionId}&conversationId={conversationId}&userId={userId}&question={question}&custom={custom}
+      n8n.chat.webhook.url: http://graphrag-workflows:5678/webhook/n8n/chat
       # Keycloak
-      spring.security.oauth2.client.registration.keycloak.scope: openid
-      spring.security.oauth2.client.registration.keycloak.client-id: graphrag-conversation
       spring.security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://graphrag-keycloak-service.keycloak:8080/auth/realms/{{ .Values.global.graphrag.keycloak.realm }}/protocol/openid-connect/certs'
       spring.security.oauth2.resourceserver.jwt.issuer-uri: '{{ include "graphrag.keycloak.url" . }}/realms/{{ .Values.global.graphrag.keycloak.realm }}'
       keycloak.health.url: http://graphrag-keycloak-service.keycloak:9000/auth/health
@@ -141,11 +141,22 @@ conversation:
         usernameKey: username
         passwordKey: password
 
-    # Configurations for Keycloak as an identity provider.
-    keycloak:
-      oauth2_client:
-        existingSecret: graphrag-conversation-keycloak-secrets
-        clientSecretKey: client-secret
+    # Configurations for connecting to GraphDB.
+    # See the sub-chart for all configuration settings.
+    graphdb:
+      url: http://graphdb:7200
+      auth:
+        type: none
+        basic: {}
+        oauth2: {}
+
+    # Configurations for connecting to Elasticsearch.
+    # See the sub-chart for all configuration settings.
+    elasticsearch:
+      url: http://elasticsearch:9200
+      auth:
+        basic:
+          existingSecret: ""
 
   # By default, the Conversation API is exposed via the Chatbot application NGINX.
   # Override if you want to expose directly via an Ingress resource.
@@ -169,7 +180,7 @@ components:
   # Name for the GraphRAG Components resources.
   fullnameOverride: graphrag-components
 
-  # Number of GraphRAG Componentspods to deploy in the cluster.
+  # Number of GraphRAG Components pods to deploy in the cluster.
   # Ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#replicas
   replicas: 1
 
@@ -212,7 +223,7 @@ workflows:
   # GraphRAG Workflows is currently using a different image from the one provided in the upstream chart.
   image:
     repository: graphrag-workflows
-    tag: 1.3.0
+    tag: 2.0.0
 
   # License configurations for the GraphRAG Workflows service.
   # You need N8N Enterprise license for certain features required by the Workflows service.
@@ -267,4 +278,4 @@ workflows:
     image:
       # The image used for the bootstrap Job.
       repository: graphrag-workflows-bootstrap
-      tag: 1.3.0
+      tag: 2.0.0

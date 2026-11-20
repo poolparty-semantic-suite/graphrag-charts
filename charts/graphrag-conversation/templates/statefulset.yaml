@@ -153,7 +153,8 @@ spec:
               {{- tpl (toYaml .) $ | nindent 12 }}
             {{- end }}
           env:
-            {{- if or .Values.configuration.duckdb.credentials.existingSecret }}
+            {{- /* DuckDB credentials */ -}}
+            {{- if .Values.configuration.duckdb.credentials.existingSecret }}
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -165,12 +166,65 @@ spec:
                   name: {{ tpl .Values.configuration.duckdb.credentials.existingSecret . }}
                   key: {{ .Values.configuration.duckdb.credentials.passwordKey }}
             {{- end }}
-            {{- if .Values.configuration.keycloak.oauth2_client.existingSecret }}
-            - name: spring.security.oauth2.client.registration.keycloak.client-secret
+            {{- /* GraphDB basic authentication credentials */ -}}
+            {{- if eq .Values.configuration.graphdb.auth.type "basic" }}
+              {{- required "configuration.graphdb.auth.basic.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.basic.existingSecret }}
+            - name: graphdb.auth.username
               valueFrom:
                 secretKeyRef:
-                  name: {{ tpl .Values.configuration.keycloak.oauth2_client.existingSecret . }}
-                  key: {{ .Values.configuration.keycloak.oauth2_client.clientSecretKey }}
+                  name: {{ tpl .Values.configuration.graphdb.auth.basic.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.basic.usernameKey }}
+            - name: graphdb.auth.password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.basic.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.basic.passwordKey }}
+            {{- end }}
+            {{- /* GraphDB OAuth2 authentication credentials */ -}}
+            {{- if eq .Values.configuration.graphdb.auth.type "oauth" }}
+              {{- required "configuration.graphdb.auth.oauth2.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.oauth2.existingSecret }}
+            - name: graphdb.oauth.registration-id
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.oauth2.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.oauth2.registrationIdKey }}
+            - name: graphdb.oauth.client-id
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.oauth2.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.oauth2.clientIdKey }}
+            - name: graphdb.oauth.client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.oauth2.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.oauth2.clientSecretKey }}
+            - name: graphdb.oauth.token-uri
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.oauth2.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.oauth2.tokenEndpointKey }}
+            - name: graphdb.oauth.scope
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.graphdb.auth.oauth2.existingSecret . }}
+                  key: {{ .Values.configuration.graphdb.auth.oauth2.scopeKey }}
+            {{- end }}
+            {{- /* Elasticsearch basic authentication credentials */ -}}
+            {{- if .Values.configuration.elasticsearch.auth.basic.existingSecret }}
+            - name: elasticsearch.auth.username
+              {{- if .Values.configuration.elasticsearch.auth.basic.username }}
+              value: {{ .Values.configuration.elasticsearch.auth.basic.username }}
+              {{- else }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.elasticsearch.auth.basic.existingSecret . }}
+                  key: {{ .Values.configuration.elasticsearch.auth.basic.usernameKey }}
+              {{- end }}
+            - name: elasticsearch.auth.password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ tpl .Values.configuration.elasticsearch.auth.basic.existingSecret . }}
+                  key: {{ .Values.configuration.elasticsearch.auth.basic.passwordKey }}
             {{- end }}
             {{- with .Values.extraEnv }}
               {{- tpl (toYaml .) $ | nindent 12 }}

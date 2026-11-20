@@ -1,5 +1,21 @@
 # GraphRAG Conversation Changelog
 
+## Version 2.0.0
+
+### New
+
+- Added `configuration.graphdb` with configurations for connecting and authenticating to GraphDB
+- Added `configuration.elasticsearcg` with configurations for connecting and authenticating to Elasticsearch
+
+### Updated
+
+- Updated to version 2.0.0 of the GraphRAG Conversation service
+- Updated the name template to render DNS compliant values
+- Removed all query parameters from the `n8n.chat.webhook.url` configuration
+- Removed `n8n.workflows.volume.path` and `n8n.credentials.volume.path` configurations
+- Removed unused Keycloak configurations from `configuration.properties`
+- Removed `configuration.keycloak` and related configuraitons
+
 ## Version 1.4.1
 
 ### Fixed

@@ -56,10 +56,6 @@ kubectl -n ${GRAPHRAG_NAMESPACE} create secret generic graphrag-conversation-dat
         --from-literal=username="graphrag" \
         --from-literal=password="${GRAPHRAG_CONVERSATION_DATABASE_PASSWORD}" || true
 
-# Should match what's in keycloak-realm-import.yaml or if you have provided/configured something else.
-kubectl -n ${GRAPHRAG_NAMESPACE} create secret generic graphrag-conversation-keycloak-secrets \
-        --from-literal=client-secret='change-me-please' || true
-
 #
 # GraphRAG Workflows PostgreSQL
 #

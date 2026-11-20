@@ -46,6 +46,8 @@ spec:
           - https://127.0.0.1.nip.io
         standardFlowEnabled: true
         directAccessGrantsEnabled: true
+        attributes:
+          "pkce.code.challenge.method": "S256"
       - clientId: graphrag-conversation
         secret: change-me-please
         enabled: true
