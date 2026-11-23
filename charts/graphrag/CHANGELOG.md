@@ -1,5 +1,11 @@
 # GraphRAG Changelog
 
+## Version 3.0.1
+
+### Updated
+
+- [conversation] Updated the conversation chart to version 2.0.1, bringing bugfixes in the chart
+
 ## Version 3.0.0
 
 ### Updated

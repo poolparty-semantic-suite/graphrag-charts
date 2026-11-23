@@ -1,5 +1,11 @@
 # GraphRAG Conversation Changelog
 
+## Version 2.0.1
+
+### Fixed
+
+- Fixed the template rendering for GraphDB authentication settings in the StatefulSet.
+
 ## Version 2.0.0
 
 ### New

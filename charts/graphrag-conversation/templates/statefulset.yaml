@@ -166,9 +166,8 @@ spec:
                   name: {{ tpl .Values.configuration.duckdb.credentials.existingSecret . }}
                   key: {{ .Values.configuration.duckdb.credentials.passwordKey }}
             {{- end }}
-            {{- /* GraphDB basic authentication credentials */ -}}
             {{- if eq .Values.configuration.graphdb.auth.type "basic" }}
-              {{- required "configuration.graphdb.auth.basic.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.basic.existingSecret }}
+              {{- $_ := required "configuration.graphdb.auth.basic.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.basic.existingSecret }}
             - name: graphdb.auth.username
               valueFrom:
                 secretKeyRef:
@@ -182,7 +181,7 @@ spec:
             {{- end }}
             {{- /* GraphDB OAuth2 authentication credentials */ -}}
             {{- if eq .Values.configuration.graphdb.auth.type "oauth" }}
-              {{- required "configuration.graphdb.auth.oauth2.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.oauth2.existingSecret }}
+              {{- $_ := required "configuration.graphdb.auth.oauth2.existingSecret is required for basic auth" .Values.configuration.graphdb.auth.oauth2.existingSecret }}
             - name: graphdb.oauth.registration-id
               valueFrom:
                 secretKeyRef:
